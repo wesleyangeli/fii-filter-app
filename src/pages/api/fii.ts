@@ -2,9 +2,12 @@ import { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 import * as cheerio from "cheerio";
 import * as iconv from "iconv-lite";
+// import { data } from "../../../utils/segmentos";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const url = "https://www.fundamentus.com.br/fii_resultado.php";
+
+  // const segmentos: { [key: string]: string } = data;
 
   try {
     const { data } = await axios.get(url, { responseType: "arraybuffer" });
@@ -25,8 +28,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         $(element)
           .find("td")
           .each((i, el) => {
-            row[headers[i]] = $(el).text().trim();
+            const cell = $(el);
+            const link = cell.find("a");
+            if (link.length) {
+              row[headers[i]] = {
+                text: link.text().trim(),
+                href: link.attr("href"),
+              };
+            } else {
+              row[headers[i]] = cell.text().trim();
+            }
           });
+
+        // const fiiCode = row["Papel"]?.text;
+        // if (fiiCode && segmentos[fiiCode]) {
+        //   row["segmento_sistema"] = segmentos[fiiCode];
+        // } else {
+        //   row["segmento_sistema"] = "";
+        // }
+
         rows.push(row);
       });
 
