@@ -4,7 +4,7 @@ import * as cheerio from "cheerio";
 import * as iconv from "iconv-lite";
 // import { data } from "../../../utils/segmentos";
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (_req: NextApiRequest, res: NextApiResponse) => {
   const url = "https://www.fundamentus.com.br/fii_resultado.php";
 
   // const segmentos: { [key: string]: string } = data;
@@ -19,12 +19,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const headers: string[] = [];
       const rows: any[] = [];
 
-      table.find("thead tr th").each((index, element) => {
+      table.find("thead tr th").each((_index, element) => {
         headers.push($(element).text().trim());
       });
 
-      table.find("tbody tr").each((index, element) => {
-        const row: any = { key: Math.random().toString(36).substr(2, 9) }; // Chave aleatória
+      table.find("tbody tr").each((_index, element) => {
+        const row: any = { key: Math.random().toString(36).substring(2, 11) }; // Chave aleatória
         $(element)
           .find("td")
           .each((i, el) => {
