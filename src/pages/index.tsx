@@ -15,8 +15,6 @@ import {
 import { FilterDropdownProps } from "antd/es/table/interface";
 import { SearchOutlined } from "@ant-design/icons";
 import ParamsForm from "@/containers/FIIS/Forms";
-import { parse } from "path";
-import Typography from "antd/es/typography/Typography";
 
 const { Header, Content } = Layout;
 
@@ -60,8 +58,9 @@ export default function Home() {
     async function fetchDataSource() {
       try {
         setLoading([{ tableFii: true }]);
-        const { data } = await axios.get("/api/fii");
-        setDataSource(data);
+        const { data } = await axios.get("/api/si_fii");
+        console.log(data);
+        // setDataSource(data);
       } catch (error) {
         console.error(`Erro ao acessar a API: ${error}`);
         setDataSource([]);
